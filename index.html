@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мое Радио</title>
+    <style>
+        :root { --main: #eb722e; --bg: #f4f7f6; }
+        body { font-family: sans-serif; background: var(--bg); margin: 0; padding: 20px; text-align: center; }
+        .header { position: sticky; top: 0; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); z-index: 10; margin-bottom: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; }
+        .card { background: white; padding: 15px; border-radius: 10px; cursor: pointer; transition: 0.2s; }
+        .card:hover { transform: scale(1.05); border: 1px solid var(--main); }
+        .card img { width: 80px; height: 80px; object-fit: contain; display: block; margin: 0 auto 10px; }
+        .card p { margin: 0; font-size: 14px; font-weight: bold; }
+        audio { width: 100%; max-width: 400px; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h2 id="title">Выберите радио</h2>
+    <audio id="player" controls autoplay></audio>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<script>
+    const stations = [
+        { n: "Авторадио", u: "https://pub0302.101.ru:8443/stream/air/aac/64/100" },
+        { n: "Дорожное радио", u: "https://dorognoe.hostingradio.ru/dorognoe" },
+        { n: "Европа Плюс", u: "https://europaplus.hostingradio.ru:8014/europaplus320.mp3" },
+        { n: "Ретро FM", u: "http://retroserver.streamr.ru:8043/retro256.mp3" },
+        { n: "Русское Радио", u: "https://rusradio.hostingradio.ru/rusradio128.mp3" },
+        { n: "Шансон", u: "https://chanson.hostingradio.ru:8041/chanson128.mp3" }
+        // Добавь остальные сюда так же: { n: "Название", u: "ссылка" },
+    ];
+
+    const grid = document.getElementById('grid');
+    const player = document.getElementById('player');
+    const title = document.getElementById('title');
+
+    stations.forEach((s, i) => {
+        const div = document.createElement('div');
+        div.className = 'card';
+        // Картинки будут называться 001.png, 002.png и т.д.
+        const num = String(i + 1).padStart(3, '0'); 
+        div.innerHTML = `<img src="${num}.png" onerror="this.src='https://via.placeholder.com/80?text=${num}'"><p>${s.n}</p>`;
+        div.onclick = () => {
+            player.src = s.u;
+            title.innerText = "Играет: " + s.n;
+        };
+        grid.appendChild(div);
+    });
+</script>
+</body>
+</html>
